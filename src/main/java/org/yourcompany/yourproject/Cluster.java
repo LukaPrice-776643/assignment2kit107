@@ -307,3 +307,19 @@ public class Cluster implements ClusterInterface {
 		return r;
     }
 }
+
+
+//ive been so locked in doing this i didnt realise ive been doing it so poorly lmao, idk how i have even managed to get this far
+
+//the only ai used in this project was to learn and understand the methods for lists that are equal to the methods for arrays.
+
+
+//tasks:
+/*
+
+	a:	the abstract data type being used is a list like structure that im implementing as an array of cluster objects. each ballot is inserted into the correct spot within the array, and the array has the ability to grow when needed. 
+	b:the collection of candidates is modeled using an array . i find an array to be appropriate because the number of candidates is fixed, once the first ballot arrives. and the program needs fast access to the candidate clusters.
+	c:each candidates ballots is modeled using an array that can grow when needed (dynamic array) using a grow method. it supports removal from the ont among other operations that will be useful to order the candidates and clusters.
+	d:i will be using arrays as an underlying sata structure to model this program. i am choosing arrays, because i have a bigger understanding of arrays in java. i find arrays easier to work with, since i used them in my programming class last year. 
+
+*/

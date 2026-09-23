@@ -49,7 +49,7 @@ public class Collection implements CollectionInterface
 
     }
 
-    
+
 	/**
 	 * isEmpty()
 	 * 
@@ -178,9 +178,29 @@ public class Collection implements CollectionInterface
      *                  is empty.
 	 * Informally: Print the horizontal histogram of ballots per candidate
 	 */
-    public void showDistribution()
+    public void showDistribution() //this one sucke to make (having to figure out what goes where in the print statements)
     {
-//COMPLETE ME!!!
+        final int SCALE = 150;
+
+        int stars;
+
+        if (isEmpty()){
+            System.out.println("Vote Distribution:");
+            System.out.println("No Data!");
+        
+        }else{
+            System.out.println("Vote Distribution for " + getElectorateName() + ":");
+
+            for (int i = 0; i < numCandidates; i++){
+                System.out.print(candidates[i].getBundleName() + " | ");
+                stars = candidates[i].getRawCount() / SCALE;
+                for (int j = 0; j < stars; j++){
+                    System.out.print("*");
+                }
+                System.out.println(" " + candidates[i].getRawCount() + " (" + String.format("%f", candidates[i].getWeightedCount()) + ")");
+            }
+        }
+
     }
 
     /**
@@ -205,7 +225,7 @@ public class Collection implements CollectionInterface
 	 */
     public void showCandidateVotes(String candidate)
     {
-//COMPLETE ME!!!
+        //this next
     }
 
     /**
