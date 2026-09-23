@@ -198,7 +198,7 @@ public class Cluster implements ClusterInterface {
         i = numBallots - 1;
         while ((i >= 0) && (ballots[i].getChoice() < votes.getChoice())) {
             ballots[i + 1] = ballots[i];
-
+			i--;
         }
         ballots[i + 1] = votes;
         numBallots++;
@@ -297,11 +297,11 @@ public class Cluster implements ClusterInterface {
 		String r; //results
 
 		r = " ";
-		if (isEmpty()){
-			r += "Bundle:" + bundleName + "/n";
+		if (!isEmpty()){
+			r += "Bundle:" + bundleName + "";
 
 			for (int i = 0; i < numBallots; i++){
-				r += ballots[i].toString() + "/n";
+				r += ballots[i].toString() + "";
 			}
 		}
 		return r;

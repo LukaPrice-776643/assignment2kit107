@@ -34,8 +34,8 @@ public class AssigTwo226
     {
 		// final local variables
 		final String FILENAME = "votes.csv";	// Filename of the file holding the dataset
-		final int LIMIT = 50;    // number of votes to process; reduce to, e.g., 1 then 10 then 50 then 100, then 1000, then Integer.MAX_VALUE when debugging
-		final int POSITIONS = 1;				// Number of positions to elect; reduce to, e.g., 1 then 2, then 4 when debugging
+		final int LIMIT = Integer.MAX_VALUE ;    // number of votes to process; reduce to, e.g., 1 then 10 then 50 then 100, then 1000, then Integer.MAX_VALUE when debugging
+		final int POSITIONS = 4;				// Number of positions to elect; reduce to, e.g., 1 then 2, then 4 when debugging
 
 		// non final local variables
 		FileHandler myFile;		// object for file handling
@@ -60,15 +60,15 @@ public class AssigTwo226
 		collection.closeElection();
 
 		/* comment when development of addBallotToCollection() and addBallotToCluster() is complete */
-		System.out.println(collection.toString());
+		//System.out.println(collection.toString());
 		/**/
 
-		/* uncomment when developing showDistribution() * /
+		 //uncomment when developing showDistribution() 
 		// produce histogram of raw votes per candidate
 		collection.showDistribution();
-		/**/
+		
 
-		/* uncomment when developing showCandidateVotes() * /
+		 //uncomment when developing showCandidateVotes() 
 		// display all preferences for a candidate of the users' choice
 		System.out.print("Enter name of candidate: ");
 		candidate = sc.nextLine();
@@ -82,8 +82,8 @@ public class AssigTwo226
 		collection.showCandidateVotes(candidate);
 		/**/
 
-		/* uncomment when developing distributePreferences() * /
-		// conduct the distribution of preferences until the required number of people are elected
+		// uncomment when developing distributePreferences() 
+		//conduct the distribution of preferences until the required number of people are elected
 		System.out.print("Using the Hare-Clark Electoral System to fill " + POSITIONS);
 		System.out.println(POSITIONS == 1 ? " vacancy..." : " vacancies...");
 		round = 1;
@@ -96,7 +96,7 @@ public class AssigTwo226
 			round++;	// move to next round
 			outcome = collection.distributePreferences();	// complete distribution for that round
 		}
-		/**/
+		
 
 		// close the Scanner object
 		sc.close();

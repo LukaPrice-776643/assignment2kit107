@@ -2,16 +2,14 @@ package org.yourcompany.yourproject;
 
 /**
  * Collection.java
- * 
+ *
  * KIT107 Assignment 2 -- Collection Implementation
- * 
- * @author <<your name and student ID number>>
- * @version	<<date of completion>>
+ *
+ * @author Luka price 776643
+ * @version	23/09/26
  */
+public class Collection implements CollectionInterface {
 
-
-public class Collection implements CollectionInterface
-{
     // final instance variables
     final protected int MAX_CANDIDATES = 10;    // the maximum number of candidates in the collection
     final protected int NUMBER_TO_BE_ELECTED;   // the number of positions to be filled
@@ -26,18 +24,16 @@ public class Collection implements CollectionInterface
     protected int numElected;       // the number of confirmed elections so far
     protected Cluster[] candidates; // candidates still in the running
 
-	/**
-	 * Constructor
-	 * 
+    /**
+     * Constructor
+     *
      * @param numReps int -- the number of representatives to be elected
-     * 
-	 * Precondition: numReps does not exceed MAX_CANDIDATES
-	 * Postcondition: The new instance will have its instance variable(s)
-     *                  initialised.
-	 * Informally: Initialise the Collection of ballot clusters ('candidates').
-	 */
-    public Collection(int numReps)
-    {
+     *
+     * Precondition: numReps does not exceed MAX_CANDIDATES Postcondition: The
+     * new instance will have its instance variable(s) initialised. Informally:
+     * Initialise the Collection of ballot clusters ('candidates').
+     */
+    public Collection(int numReps) {
         NUMBER_TO_BE_ELECTED = numReps;
 
         candidates = new Cluster[MAX_CANDIDATES];
@@ -46,43 +42,37 @@ public class Collection implements CollectionInterface
         numCandidates = 0;
         numBallots = 0;
 
-
     }
 
-
-	/**
-	 * isEmpty()
-	 * 
-	 * @return boolean -- whether the collection is empty
-	 * 
-	 * Precondition: None
-	 * Postcondition: True is returned if the Collection is empty; false is
-     *                  returned otherwise.
-	 * Informally: Check whether the Collection is empty.
-	 */
-    public boolean isEmpty()
-    {
+    /**
+     * isEmpty()
+     *
+     * @return boolean -- whether the collection is empty
+     *
+     * Precondition: None Postcondition: True is returned if the Collection is
+     * empty; false is returned otherwise. Informally: Check whether the
+     * Collection is empty.
+     */
+    public boolean isEmpty() {
 //done
         return (numCandidates == 0);
     }
 
     /**
-     * 
+     *
      * @return String -- the name of the electorate
-     * 
-     * Precondition: None
-     * Postcondition: the name of the electorate is returned if there have
-     *                  been votes added, "" is returned otherwise
-     * Informally: Get the name of the electorate
+     *
+     * Precondition: None Postcondition: the name of the electorate is returned
+     * if there have been votes added, "" is returned otherwise Informally: Get
+     * the name of the electorate
      */
     public String getElectorateName() //no changes
     {
         String result;  // value to be returned
-        
+
         result = ""; // assume the electorate is yet to be initialised
 
-        if (!isEmpty())
-        {
+        if (!isEmpty()) {
             // (some) votes already stored, so name already defined
             result = electorateName;
         }
@@ -92,73 +82,65 @@ public class Collection implements CollectionInterface
     }
 
     /**
-	 * addBallotToCollection()
-	 * 
-	 * @param votes Ballot -- the ballot paper to add to this collection
-	 * 
-	 * Precondition: The given ballot parameter has been constructed
-	 * Postcondition: The given Ballot has been added to the Collection and,
-     *                  in particular to the appropriate cluster of ballots
-     *                  based on the selected choice.  Additionally, if this
-     *                  Ballot is the first one to be added, then the names
-     *                  of the candidates are set (i.e. the clusters are
-     *                  initialised) and the name of the electorate is
-     *                  stored.
-	 * Informally: Add a ballot to the appropriate 'candidate' in the
-     *                  Collection, updating the electorate and candidate 
-     *                  details.
-	 */
-    public void addBallotToCollection(Ballot votes)
-    {
-        String []names; //candidate names
+     * addBallotToCollection()
+     *
+     * @param votes Ballot -- the ballot paper to add to this collection
+     *
+     * Precondition: The given ballot parameter has been constructed
+     * Postcondition: The given Ballot has been added to the Collection and, in
+     * particular to the appropriate cluster of ballots based on the selected
+     * choice. Additionally, if this Ballot is the first one to be added, then
+     * the names of the candidates are set (i.e. the clusters are initialised)
+     * and the name of the electorate is stored. Informally: Add a ballot to the
+     * appropriate 'candidate' in the Collection, updating the electorate and
+     * candidate details.
+     */
+    public void addBallotToCollection(Ballot votes) {
+        String[] names; //candidate names
         int i;             // index to ffind cluster
 
-        if (isEmpty()){
+        if (isEmpty()) {
             electorateName = votes.getElectorate();
 
             names = votes.getVotes();
             numCandidates = names.length;
 
-            for (i = 0; i < numCandidates; i++){
+            for (i = 0; i < numCandidates; i++) {
                 candidates[i] = new Cluster(names[i]);
-                
+
             }
         }
         numBallots++; // create new ballot paper
 
         // find the cluster matching the ballot's current preference
         i = 0;
-         while ((i < numCandidates) && (!candidates[i].getBundleName().equalsIgnoreCase(votes.getSelection()))){
+        while ((i < numCandidates) && (!candidates[i].getBundleName().equalsIgnoreCase(votes.getSelection()))) {
             i++;
-         }
-            if (i < numCandidates){
-                candidates[i].addBallotToCluster(votes);
-            }
+        }
+        if (i < numCandidates) {
+            candidates[i].addBallotToCluster(votes);
+        }
     }
 
     /**
      * validCandidate()
-     * 
+     *
      * @param name String -- the name of the candidate to search for
      * @return boolean -- whether or not the give candidate was found
-     * 
-     * Precondition: The given String is not null
-     * Postcondition: True is returned if the name is found as the name
-     *                  of one the clusters, and false otherwise.  The
-     *                  comparison should be case insensitive.
-     * Informally: Check whether the given candidate is still 'live' in
-     *                  the election, i.e. not elected and not
-     *                  eliminated
+     *
+     * Precondition: The given String is not null Postcondition: True is
+     * returned if the name is found as the name of one the clusters, and false
+     * otherwise. The comparison should be case insensitive. Informally: Check
+     * whether the given candidate is still 'live' in the election, i.e. not
+     * elected and not eliminated
      */
-    public boolean validCandidate(String name)
-    {
+    public boolean validCandidate(String name) {
         int i;  // index for iterating through candidates
 
         // find location of chosen candidate in the candidates array
         i = 0;
-        while ((i < numCandidates) && (! name.equalsIgnoreCase(candidates[i].getBundleName())))
-        {
-            // this candidate isn't the desired candidate, go to the next one
+        while ((i < numCandidates) && (!name.equalsIgnoreCase(candidates[i].getBundleName()))) {
+            // this candidate isn't the desired candidate, go to the next one.
             i++;
         }
 
@@ -167,34 +149,32 @@ public class Collection implements CollectionInterface
     }
 
     /**
-	 * showDistribution()
-	 * 
-	 * Precondition: None
-	 * Postcondition: The Collection is traversed cluster by cluster.  A
-     *                  row comprising cluster name (candidate), a star for
-     *                  each 150 votes for that candidate, and the total
-     *                  number of votes in the cluster is printed.  The
-     *                  message "No data!" should be printed if the Collection 
-     *                  is empty.
-	 * Informally: Print the horizontal histogram of ballots per candidate
-	 */
+     * showDistribution()
+     *
+     * Precondition: None Postcondition: The Collection is traversed cluster by
+     * cluster. A row comprising cluster name (candidate), a star for each 150
+     * votes for that candidate, and the total number of votes in the cluster is
+     * printed. The message "No data!" should be printed if the Collection is
+     * empty. Informally: Print the horizontal histogram of ballots per
+     * candidate
+     */
     public void showDistribution() //this one sucked to make (having to figure out what goes where in the print statements)
     {
         final int SCALE = 150;
 
         int stars;
 
-        if (isEmpty()){
+        if (isEmpty()) {
             System.out.println("Vote Distribution:");
             System.out.println("No Data!");
-        
-        }else{
+
+        } else {
             System.out.println("Vote Distribution for " + getElectorateName() + ":");
 
-            for (int i = 0; i < numCandidates; i++){
+            for (int i = 0; i < numCandidates; i++) {
                 System.out.print(candidates[i].getBundleName() + " | ");
                 stars = candidates[i].getRawCount() / SCALE;
-                for (int j = 0; j < stars; j++){
+                for (int j = 0; j < stars; j++) {
                     System.out.print("*");
                 }
                 System.out.println(" " + candidates[i].getRawCount() + " (" + String.format("%f", candidates[i].getWeightedCount()) + ")");
@@ -204,77 +184,96 @@ public class Collection implements CollectionInterface
     }
 
     /**
-	 * showCandidateVotes()
-	 * 
-     * @param candidate String -- the name of the candidate for whom the
-     *                  vote histogram is to be shown
-     * 
-	 * Precondition: The given String is not null
-	 * Postcondition: The Collection is traversed cluster by cluster.  Each
-     *                  cluster is searched for the given candidate and a
-     *                  tally is kept of the count of #1 votes for the
-     *                  candidate, #2 votes, etc.  When this counting is
-     *                  concluded, a row for each preference is printed,
-     *                  with a row of stars printed for each 150 votes for
-     *                  that preference, and the total number of votes of
-     *                  that preference is also printed.  The message 
-     *                  "No data!" should be printed if the Collection is
-     *                  empty.
-	 * Informally: Print the horizontal histogram of ballots per preference
-     *                  for the given candidate
-	 */
-    public void showCandidateVotes(String candidate)
-    {
-        //COMPLETE ME!                                                                                            here
+     * showCandidateVotes()
+     *
+     * @param candidate String -- the name of the candidate for whom the vote
+     * histogram is to be shown
+     *
+     * Precondition: The given String is not null Postcondition: The Collection
+     * is traversed cluster by cluster. Each cluster is searched for the given
+     * candidate and a tally is kept of the count of #1 votes for the candidate,
+     * #2 votes, etc. When this counting is concluded, a row for each preference
+     * is printed, with a row of stars printed for each 150 votes for that
+     * preference, and the total number of votes of that preference is also
+     * printed. The message "No data!" should be printed if the Collection is
+     * empty. Informally: Print the horizontal histogram of ballots per
+     * preference for the given candidate
+     */
+    public void showCandidateVotes(String candidate) {
+        final int SCALE = 150;                 // number of votes represented by each star
+        final int MAX_PREFS = MAX_CANDIDATES;  // preferences can run up to this many
+        int[] tally;    // count of votes per preference number
+        int stars;      // number of stars to print for a preference
+
+        if (isEmpty()) {
+            System.out.println("Raw Vote Allocation:");
+            System.out.println("No data!");
+
+        } else {
+
+            System.out.println("Raw Vote Allocation for " + candidate + ":");
+            // tally how many votes the candidate has at each preference number, across all clusters
+            tally = new int[MAX_PREFS];
+            for (int pref = 0; pref < MAX_PREFS; pref++) {
+
+                for (int i = 0; i < numCandidates; i++) {
+                    tally[pref] += candidates[i].votesFor(candidate, pref);
+                }
+
+            }
+            // print a histogram row for every preference that received at least one vote
+            for (int pref = 0; pref < MAX_PREFS; pref++) {
+
+                if (tally[pref] > 0) {
+                    System.out.print("Preference " + (pref + 1) + " | ");
+                    stars = tally[pref] / SCALE;
+                    for (int j = 0; j < stars; j++) {
+                        System.out.print("*");
+                    }
+                    System.out.println(" " + tally[pref]);
+                }
+            }
+        }
     }
 
     /**
-	 * closeElection()
-	 * 
-	 * Precondition: None
-	 * Postcondition: The quota of votes required to be elected is
-     *                  calculated
-	 * Informally: Determine the quota required for election now
-     *                  that voting has closed
-	 */
-    public void closeElection()
-    {
+     * closeElection()
+     *
+     * Precondition: None Postcondition: The quota of votes required to be
+     * elected is calculated Informally: Determine the quota required for
+     * election now that voting has closed
+     */
+    public void closeElection() {
         quota = numBallots / (NUMBER_TO_BE_ELECTED + 1) + 1;
     }
 
     /**
-	 * maxVotes()
-	 * 
+     * maxVotes()
+     *
      * @return double [] -- the count of votes
-     * 
-	 * Precondition: The Collection is validly defined
-	 * Postcondition: The Collection is traversed cluster by cluster.
-     *                  The weighted number of votes for the 'current'
-     *                  candidate for each cluster is obtained and the
-     *                  maximum of these is returned in element 1 of the
-     *                  result array.  Element 0 holds the index of the
-     *                  cluster from which the maximum comes.
-	 * Informally: Find the maximum (weighted) count of votes received
-     *                  by all the candidates still in the election to
-     *                  determine whether a candidate is elected.
-	 */
-    protected double []maxVotes()
-    {
+     *
+     * Precondition: The Collection is validly defined Postcondition: The
+     * Collection is traversed cluster by cluster. The weighted number of votes
+     * for the 'current' candidate for each cluster is obtained and the maximum
+     * of these is returned in element 1 of the result array. Element 0 holds
+     * the index of the cluster from which the maximum comes. Informally: Find
+     * the maximum (weighted) count of votes received by all the candidates
+     * still in the election to determine whether a candidate is elected.
+     */
+    protected double[] maxVotes() {
         // final local variables
         final int UNDEFINED = -1;   // a sentinel to indicate that there is no maximum yet
         final int CANDIDATE = 0;    // the candidate index is element 0
         final int VALUE = 1;        // the vote weight value is element 1
 
         // non-final local variables
-        double []result = {UNDEFINED, UNDEFINED};   // the array holding the pair of candidate index and vote weight
+        double[] result = {UNDEFINED, UNDEFINED};   // the array holding the pair of candidate index and vote weight
         double max = 0;                             // the maximum weight found
         int maxCandidate = 0;                       // the candidate cluster corresponding to the maximum vote weight
-        
+
         // search all the current clusters for the weight of the candidate with the most votes
-        for (int i = 0; i < numCandidates; i++)
-        {
-            if (candidates[i].getWeightedCount() > max)
-            {
+        for (int i = 0; i < numCandidates; i++) {
+            if (candidates[i].getWeightedCount() > max) {
                 // found a new maximum so remember it and remember who
                 max = candidates[i].getWeightedCount();
                 maxCandidate = i;
@@ -289,38 +288,32 @@ public class Collection implements CollectionInterface
     }
 
     /**
-	 * minVotes()
-	 * 
+     * minVotes()
+     *
      * @return double [] -- the count of votes
-     * 
-	 * Precondition: The Collection is validly defined
-	 * Postcondition: The Collection is traversed cluster by cluster.
-     *                  The weighted number of votes for the 'current'
-     *                  candidate for each cluster is obtained and the
-     *                  minimum of these is returned in element 1 of the
-     *                  result array.  Element 0 holds the index of the
-     *                  cluster from which the minimum comes.
-	 * Informally: Find the minimum (weighted) count of votes received
-     *                  by all the candidates still in the election to
-     *                  determine whether a candidate is eliminated.
-	 */
-    protected double []minVotes()
-    {
+     *
+     * Precondition: The Collection is validly defined Postcondition: The
+     * Collection is traversed cluster by cluster. The weighted number of votes
+     * for the 'current' candidate for each cluster is obtained and the minimum
+     * of these is returned in element 1 of the result array. Element 0 holds
+     * the index of the cluster from which the minimum comes. Informally: Find
+     * the minimum (weighted) count of votes received by all the candidates
+     * still in the election to determine whether a candidate is eliminated.
+     */
+    protected double[] minVotes() {
         // final local variables
         final int UNDEFINED = -1;   // a sentinel to indicate that there is no minimum yet
         final int CANDIDATE = 0;    // the candidate index is element 0
         final int VALUE = 1;        // the vote weight value is element 1
 
         // non-final local variables
-        double []result = {UNDEFINED, UNDEFINED};   // the array holding the pair of candidate index and vote weight
+        double[] result = {UNDEFINED, UNDEFINED};   // the array holding the pair of candidate index and vote weight
         double min = Integer.MAX_VALUE;                             // the minimum weight found
         int minCandidate = 0;                       // the candidate cluster corresponding to the minimum vote weight
-        
+
         // search all the current clusters for the weight of the candidate with the least votes
-        for (int i = 0; i < numCandidates; i++)
-        {
-            if (candidates[i].getWeightedCount() < min)
-            {
+        for (int i = 0; i < numCandidates; i++) {
+            if (candidates[i].getWeightedCount() < min) {
                 // found a new minimum so remember it and remember who
                 min = candidates[i].getWeightedCount();
                 minCandidate = i;
@@ -335,28 +328,24 @@ public class Collection implements CollectionInterface
     }
 
     /**
-	 * inTheRunning()
-	 * 
-     * @param candidate String -- the name of the candidate for whom the
-     *                  enquiry is being made
-     * 
-	 * Precondition: The given String is not null
-	 * Postcondition: The Collection is traversed cluster by cluster.  Each
-     *                  cluster is checked to see whether the given candidate
-     *                  is the 'current' candidate in a cluster.  True is
-     *                  returned if they are, false is returned if they are
-     *                  not.
-	 * Informally: Determine whether the given candidate is still in the
-     *                  running for a vacancy.
-	 */
-    protected boolean inTheRunning(String candidate)
-    {
+     * inTheRunning()
+     *
+     * @param candidate String -- the name of the candidate for whom the enquiry
+     * is being made
+     *
+     * Precondition: The given String is not null Postcondition: The Collection
+     * is traversed cluster by cluster. Each cluster is checked to see whether
+     * the given candidate is the 'current' candidate in a cluster. True is
+     * returned if they are, false is returned if they are not. Informally:
+     * Determine whether the given candidate is still in the running for a
+     * vacancy.
+     */
+    protected boolean inTheRunning(String candidate) {
         int i;  // loop counter of clusters
 
         // search the bundles to see whether one of them is the given candidate
         i = 0;
-        while ((i < numCandidates) && (! candidates[i].getBundleName().equals(candidate)))
-        {
+        while ((i < numCandidates) && (!candidates[i].getBundleName().equals(candidate))) {
             // not this one, try the next
             i++;
         }
@@ -366,44 +355,57 @@ public class Collection implements CollectionInterface
     }
 
     /**
-	 * transfer()
-	 * 
-     * @param index int -- the index of the cluster to transfer the votes
-     *                  from
+     * transfer()
+     *
+     * @param index int -- the index of the cluster to transfer the votes from
      * @param residual double -- the weight of each vote once transferred
-     * 
-	 * Precondition: index is within the Collection and residual is a non-
-     *                  negative number
-	 * Postcondition: All votes from the given candidate's bundle (cluster)
-     *                  are updated to their next preference, re-weighted if
-     *                  appropriate, deleted from the current bundle, and,
-     *                  if not exhausted, added to the bundle of the next
-     *                  preference's candidate
-	 * Informally: Move ballots from the current eliminated/elected
-     *                  candidate to the next preference for each ballot
-	 */
-    protected void transfer(int index, double residual)
-    {
-//COMPLETE ME!!!                                                                                                                     here
+     *
+     * Precondition: index is within the Collection and residual is a non-
+     * negative number Postcondition: All votes from the given candidate's
+     * bundle (cluster) are updated to their next preference, re-weighted if
+     * appropriate, deleted from the current bundle, and, if not exhausted,
+     * added to the bundle of the next preference's candidate Informally: Move
+     * ballots from the current eliminated/elected candidate to the next
+     * preference for each ballot
+     */
+    protected void transfer(int index, double residual) {
+        Ballot ballot;  // ballot being moved to its next preference
+
+        int i;          // index of the cluster the ballot is moving to
+
+        // move every ballot out of this cluster
+        while (!candidates[index].isEmpty()) {
+            ballot = candidates[index].transfer(residual);
+            // skip any preferences for candidates no longer In running
+            while ((!ballot.exhausted()) && (!inTheRunning(ballot.getSelection()))) {
+                ballot.update();
+            }
+
+            if (!ballot.exhausted()) {
+                // find the (still-running) candidate of this ballot's next preference
+                i = 0;
+                while ((i < numCandidates) && (!candidates[i].getBundleName().equals(ballot.getSelection()))) {
+                    i++;
+                }
+                candidates[i].addBallotToCluster(ballot);
+            }
+        }
     }
 
     /**
-	 * elect()
-	 * 
+     * elect()
+     *
      * @param index int -- the index of the cluster to transfer
-     * 
-	 * Precondition: The given int is an index to a candidate in the Collection
-	 * Postcondition: The given candidate has been elected and so the
-     *                  surplus (excess votes beyond the quota) is
-     *                  calculated, the residual weighting of this surplus
-     *                  is calculated, and the ballots moved from this
-     *                  candidate to the next preference of each ballot at
-     *                  the residual weighting.
-	 * Informally: Elect the candidate, moving a residual proportion of
-     *                  the vote to the next preference.
-	 */
-    protected void elect(int index)
-    {
+     *
+     * Precondition: The given int is an index to a candidate in the Collection
+     * Postcondition: The given candidate has been elected and so the surplus
+     * (excess votes beyond the quota) is calculated, the residual weighting of
+     * this surplus is calculated, and the ballots moved from this candidate to
+     * the next preference of each ballot at the residual weighting. Informally:
+     * Elect the candidate, moving a residual proportion of the vote to the next
+     * preference.
+     */
+    protected void elect(int index) {
         double surplus;     // the excess votes for this candidate beyond the quota
         double residual;    // the weighting of each vote based on the surplus in proportion to the quota
 
@@ -413,7 +415,6 @@ public class Collection implements CollectionInterface
         residual = surplus / candidates[index].getWeightedCount();
 
         //System.out.println("candidate: " + index + " surplus: " + surplus + " residual: " + residual);
-
         // transfer the votes from this candidate to the candidate(s) of the next preference, if there are any
         transfer(index, residual);
 
@@ -422,20 +423,17 @@ public class Collection implements CollectionInterface
     }
 
     /**
-	 * eliminate()
-	 * 
+     * eliminate()
+     *
      * @param index int -- the index of the cluster to transfer
-     * 
-	 * Precondition: The given int is an index to a candidate in the Collection
-	 * Postcondition: The given candidate has been eliminated and so all
-     *                  the ballots are moved from this candidate to the
-     *                  next preference candidate of each ballot at full
-     *                  weighting.
-	 * Informally: Eliminate the candidate, moving all votes to the
-     *                  voter's next preference candidate at full value.
-	 */
-    protected void eliminate(int index)
-    {
+     *
+     * Precondition: The given int is an index to a candidate in the Collection
+     * Postcondition: The given candidate has been eliminated and so all the
+     * ballots are moved from this candidate to the next preference candidate of
+     * each ballot at full weighting. Informally: Eliminate the candidate,
+     * moving all votes to the voter's next preference candidate at full value.
+     */
+    protected void eliminate(int index) {
         final int FULL = -1;    // sentinel indicating that the weight is to be full and not proportional
 
         // move all ballots from this cluster to their next preference at full value
@@ -443,73 +441,105 @@ public class Collection implements CollectionInterface
     }
 
     /**
-	 * distributePreferences()
-	 * 
+     * distributePreferences()
+     *
      * @return String -- the outcome of the round of preference distribution
-     * 
-	 * Precondition: None
-	 * Postcondition: One of three outcomes has occurred:
-     *                  - if there are no candidates then the message 
-     *                      "No data!" should be printed and "" returned.
-     *                  - if a candidate is found to have reached/exceeded
-     *                      quota then they are elected, removed from the
-     *                      collection, and if there were surplus votes
-     *                      then all their votes are redistributed at the
-     *                      proportion of surplus/total, otherwise the
-     *                      votes are discarded. A String describing the
-     *                      outcome is returned.
-     *                  - the candidate with the minimum number of votes
-     *                      is found and removed from the election, and
-     *                      all of their next preference votes are 
-     *                      distributed to the corresponding candidate 
-     *                      (if they're still in the election) or 
-     *                      discarded if the ballot is exhausted. A
-     *                      String describing the outcome is returned.
-	 * Informally: Identify the next candidate elected or eliminated and 
-     *                  redistribute their votes.
-	 */
-    public String distributePreferences()
-    {
-//COMPLETE ME!!!                                                                                                            here
-        return "UNFINISHED";  // change me -- this is just to allow the program to compile
+     *
+     * Precondition: None Postcondition: One of three outcomes has occurred: -
+     * if there are no candidates then the message "No data!" should be printed
+     * and "" returned. - if a candidate is found to have reached/exceeded quota
+     * then they are elected, removed from the collection, and if there were
+     * surplus votes then all their votes are redistributed at the proportion of
+     * surplus/total, otherwise the votes are discarded. A String describing the
+     * outcome is returned. - the candidate with the minimum number of votes is
+     * found and removed from the election, and all of their next preference
+     * votes are distributed to the corresponding candidate (if they're still in
+     * the election) or discarded if the ballot is exhausted. A String
+     * describing the outcome is returned. Informally: Identify the next
+     * candidate elected or eliminated and redistribute their votes.
+     */
+    public String distributePreferences() {
+
+        double[] max;          // {index, weighted count} of the candidate with the most votes
+        double[] min;          // {index, weighted count} of the candidate with the fewest votes
+        int index;             // index of the candidate being elected/eliminated this round
+        int seatsRemaining;    // number of vacancies still to be filled
+        String name;           // name of that candidate
+        String outcome;        // description of the outcome of this round, "" if there is nothing more to do
+        outcome = "";
+
+        if (isEmpty()) {
+
+            System.out.println("No data!");
+
+        } else if (numElected < NUMBER_TO_BE_ELECTED) {
+            max = maxVotes();
+            index= (int) max[0];
+            seatsRemaining =NUMBER_TO_BE_ELECTED - numElected;
+
+            // elect the leading candidate if they've reached/exceeded quota, OR if there are
+            // now exactly as many candidates left as there are vacancies left to fill
+            if ((max[1] >= quota) || (numCandidates <= seatsRemaining)) {
+                name = candidates[index].getBundleName();
+                elect(index);  // transfers any surplus votes at the residual weighting
+                outcome = name + " is ELECTED with " + (int) max[1] + "/" + quota + " weighted votes!";
+
+                // drop this candidate from the array of candidates still in the running
+                for (int i = index; i < numCandidates - 1; i++) {
+                    candidates[i] = candidates[i + 1];
+
+                }
+                candidates[numCandidates - 1] = null;
+                numCandidates--;
+
+            } else {
+                // nobody has reached the quota -- eliminate the candidate with the fewest votes
+                min =minVotes();
+                index= (int) min[0];
+                name = candidates[index].getBundleName();
+                eliminate(index);   // transfers all their votes at full weighting
+
+                outcome = name + " is ELIMINATED with " + (int) min[1] + "/" + quota + " weighted votes!";
+                // drop this candidate from the array of candidates still in the running
+                for (int i = index; i < numCandidates - 1; i++) {
+                    candidates[i] = candidates[i + 1];
+                }
+                candidates[numCandidates - 1] = null;
+                numCandidates--;
+            }
+        }
+        return outcome;
+
     }
 
-	/**
-	 * toString()
-	 * 
-	 * @return String -- printable form of the Collection of ballots
-	 * 
-	 * Precondition: None
-	 * Postcondition: A printable (String) form of the ballot data is
-     *                  returned.  If there are no known candidates 
-     *                  then "No Data!" is returned.
-	 * Informally: Convert the Collection of ballot data to a multi-
-     *                  line String.
-	 */
-    public String toString()
-    {
+    /**
+     * toString()
+     *
+     * @return String -- printable form of the Collection of ballots
+     *
+     * Precondition: None Postcondition: A printable (String) form of the ballot
+     * data is returned. If there are no known candidates then "No Data!" is
+     * returned. Informally: Convert the Collection of ballot data to a multi-
+     * line String.
+     */
+    public String toString() {
         String result;  // result
 
         // build String form of Collection
-        if (isEmpty())
-        {
+        if (isEmpty()) {
             // no candidates!
             result = "No data!";
-        }
-        else
-        {
+        } else {
             // there are candidates so provide election summary
             result = "Electorate: " + getElectorateName() + "\n";
             result += "Quota: " + quota + "\n";
             result += "Number of vacancies: " + NUMBER_TO_BE_ELECTED + "\n";
             result += "Number of Candidates: " + numCandidates + "\n";
             result += "Number of Ballots: " + numBallots + "\n";
-            if (numBallots > 0)
-            {
+            if (numBallots > 0) {
                 // there are ballots so provide raw count of votes for all candidates
                 result += "\nCandidates:\n";
-                for (int i = 0; i < numCandidates; i++)
-                {
+                for (int i = 0; i < numCandidates; i++) {
                     // add printable form of candidate name and votes to the result
                     result += "\t" + candidates[i].getBundleName() + " (" + candidates[i].getRawCount() + ")\n";
                 }

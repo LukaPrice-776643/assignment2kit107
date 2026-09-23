@@ -7,7 +7,7 @@ package org.yourcompany.yourproject;
  * 
  * @author Julian Dermoudy
  * @version	31/7/2026
- * 
+ * Ella VATER
  * FILE IS COMPLETE
  */
 
