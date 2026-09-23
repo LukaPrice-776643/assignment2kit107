@@ -1,6 +1,6 @@
 package org.yourcompany.yourproject;
 
-//for reference, im using eclipse to write the code as im farmiliar, but then pasting it in here to add to repo. vscode doesnt like me very muich and wont work a lot of the time.
+//nvm it started working again after adding packages
 /**
  * Cluster.java
  *
@@ -10,7 +10,9 @@ package org.yourcompany.yourproject;
  * @version	23/09/26
  */
 public class Cluster implements ClusterInterface {
-    // instance variables
+    // instance variables, (fixed for arrray.)
+
+	final protected int INITIAL_CAPACITY = 16;  // starting size of the ballots array
 
     protected String bundleName;        // candidate for whom this cluster of votes is for
 
@@ -18,88 +20,87 @@ public class Cluster implements ClusterInterface {
 
     protected int rawCount;             //  a raw count of votes in this cluster
 
-    protected Node first;               // the head of the linked list of ballots
+    protected Ballot[] ballots;         // array holding the ballots in this cluster
 
-    protected Node last;                // tail of the linked list of ballots (for O(1) append) //finished (possibly, this is all i could think of needding at the time)
+    protected int numBallots;           // number of ballots currently stored in the array
 
     // raw count of votes in this cluster
     /**
 
-          **** Constructor
+          ***** Constructor
 
-          ****
+          *****
      *
      * @param candidate String -- the name of the candidate whose votes * this
      * bundle (cluster) is for
      *
      *
 
-          **** Precondition: The String is defined and unique
+          ***** Precondition: The String is defined and unique
 
-          **** Postcondition: The new instance will have its instance variable(s)
+          ***** Postcondition: The new instance will have its instance variable(s)
      *
      * initialised to indicate an empty cluster.
 
-          **** Informally: Initialise the cluster of ballots.
+          ***** Informally: Initialise the cluster of ballots.
 
-          ***
+          ****
      */
-    public Cluster(String candidate) {//finished
+    public Cluster(String candidate) {//fixed.
 
         bundleName = candidate;
         weightedCount = 0;
         rawCount = 0;
-        first = null;
-        last = null;
+        ballots = new Ballot[INITIAL_CAPACITY];
+        numBallots = 0;
+
 
     }
 
-    public Cluster() {
+    
+
+    /**
+
+          ***** isEmpty()
+
+          ***** @return boolean -- whether the cluster is empty
+
+          ***** Precondition: None
+
+          ***** Postcondition: True is returned if the Cluster is empty; false is
+     * returned otherwise.
+
+          ***** Informally: Check whether the Cluster is empty.
+
+          ****
+     */
+    public boolean isEmpty() {
+        ///fixed
+
+          return (numBallots == 0);
     }
 
     /**
 
-          **** isEmpty()
+          **** getFirstBallot()
 
-          **** @return boolean -- whether the cluster is empty
+          ****
+
+          **** @return Ballot -- the first ballot paper in the cluster
+
+          ****
 
           **** Precondition: None
 
-          **** Postcondition: True is returned if the Cluster is empty; false is
-     * returned otherwise.
-
-          **** Informally: Check whether the Cluster is empty.
-
-          ***
-     */
-    public boolean isEmpty() {
-        ///finished
-
-        return (first == null);
-
-    }
-
-    /**
-
-          *** getFirstBallot()
-
-          ***
-
-          *** @return Ballot -- the first ballot paper in the cluster
-
-          ***
-
-          *** Precondition: None
-
-          *** Postcondition: the first ballot in the cluster is returned if the
+          **** Postcondition: the first ballot in the cluster is returned if the
      *
      * cluster is non-empty; null is returned otherwise.
 
-          *** Informally: Get the first ballot paper in the cluster.
+          **** Informally: Get the first ballot paper in the cluster.
 
-          **
+          ***
      */
-    public Ballot getFirstBallot() { //finishedd
+    public Ballot getFirstBallot() { //fixed
 
         Ballot result;  // the result of the method
 
@@ -107,7 +108,7 @@ public class Cluster implements ClusterInterface {
 
         if (!isEmpty()) {
 
-            result = (Ballot) first.getData();
+            result = ballots[0];
 
         }
 
@@ -152,6 +153,28 @@ public class Cluster implements ClusterInterface {
     public String getBundleName() {//dont need to change, getter method already done
         return bundleName;
     }
+    /**
+     * grow()
+     * 
+     * Precondition: None
+     * Postcondition: the capacity of the ballots array has been doubled,
+     *                  preserving all existing entries.
+     * Informally: Make room for more ballots once the array is full.
+     */
+    protected void grow() //added this for addBallotToCluster()
+    {
+        final int GROWTH_FACTOR = 2;  // how much bigger the new array should be
+ 
+        Ballot []bigger;    // the enlarged array
+ 
+        bigger = new Ballot[ballots.length * GROWTH_FACTOR];
+        for (int i = 0; i < numBallots; i++)
+        {
+            bigger[i] = ballots[i];
+        }
+        ballots = bigger;
+    }
+ 
 
     /**
      * addBallotToCluster()
@@ -163,34 +186,29 @@ public class Cluster implements ClusterInterface {
      * papers ordered by descending preference. Informally: Add a ballot paper
      * to the Cluster.
      */
-    public void addBallotToCluster(Ballot votes) { //Remember to make this a sorted insert method
+    public void addBallotToCluster(Ballot votes) {
 
-        Node n;     // anew node to hold the ballot being added
+        int i; //index variable, local.
 
-        //  wrap the ballot in a node and append it to the (tail of the) list
-        n = new Node(votes);
-
-        if (isEmpty()) {
-
-            first = n; //if empty, set first to n.
-
-        } else {
-
-            last.setNext(n); //if not empty, set last to next in n 
+        if (numBallots == ballots.length) {
+            grow();
+        }
+        //shift each entry to allow placment of new entry.
+        i = numBallots - 1;
+        while ((i >= 0) && (ballots[i].getChoice() < votes.getChoice())) {
+            ballots[i + 1] = ballots[i];
 
         }
+        ballots[i + 1] = votes;
+        numBallots++;
 
-        last = n; //last = n  (after rest of code)
-
-        // update the current total  counts
         rawCount++;
-
         weightedCount += votes.getWeight();
 
     }
 
     /**
-     * votesFor() 
+     * votesFor()
      *
      * @param candidate String -- the candidate to count the votes of
      * @param preference int -- the preference to count the votes for
@@ -205,20 +223,18 @@ public class Cluster implements ClusterInterface {
     public int votesFor(String candidate, int preference) { //finished
 
         int count;
-		Node current;
-		Ballot ballot;
 
-		count = 0;
-		current = first;
-		while (current != null){
-			ballot = (Ballot) current.getData();
-			if ((preference < ballot.getMaxVote()) && ballot.getVotes()[preference].equalsIgnoreCase(candidate)){
-				count++;
-			}
-			current.getNext();
-		}
+        Ballot ballot;
+ 
+        count = 0;
+        for (int i = 0; i < numBallots; i++) {
+            ballot = ballots[i];
+            if ((preference < ballot.getMaxVote()) && ballot.getVotes()[preference].equalsIgnoreCase(candidate)) {
+                count++;
+            }
+        }
 
-		return count;
+        return count;
     }
 
     /**
