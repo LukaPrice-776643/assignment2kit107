@@ -14,7 +14,7 @@ public class Collection implements CollectionInterface
 {
     // final instance variables
     final protected int MAX_CANDIDATES = 10;    // the maximum number of candidates in the collection
-    final protected int NUMBER_TO_BE_ELECTED = 0;   // the number of positions to be filled
+    final protected int NUMBER_TO_BE_ELECTED;   // the number of positions to be filled
 
     // would-be-final instance variables, if enforceable
     protected int quota;                // how many votes are required to become elected
@@ -24,6 +24,7 @@ public class Collection implements CollectionInterface
     protected int numCandidates;    // the number of candidates still in the election
     protected int numBallots;       // how many ballot papers were submitted this election
     protected int numElected;       // the number of confirmed elections so far
+    protected Cluster[] candidates; // candidates still in the running
 
 	/**
 	 * Constructor
@@ -37,9 +38,18 @@ public class Collection implements CollectionInterface
 	 */
     public Collection(int numReps)
     {
-//COMPLETE ME!!!
+        NUMBER_TO_BE_ELECTED = numReps;
+
+        candidates = new Cluster[MAX_CANDIDATES];
+        quota = 0;
+        electorateName = "";
+        numCandidates = 0;
+        numBallots = 0;
+
+
     }
 
+    
 	/**
 	 * isEmpty()
 	 * 
@@ -52,8 +62,8 @@ public class Collection implements CollectionInterface
 	 */
     public boolean isEmpty()
     {
-//COMPLETE ME!!!
-        return false;  // change me -- this is just to allow the program to compile
+//done
+        return (numCandidates == 0);
     }
 
     /**
@@ -65,7 +75,7 @@ public class Collection implements CollectionInterface
      *                  been votes added, "" is returned otherwise
      * Informally: Get the name of the electorate
      */
-    public String getElectorateName()
+    public String getElectorateName() //no changes
     {
         String result;  // value to be returned
         
@@ -100,7 +110,30 @@ public class Collection implements CollectionInterface
 	 */
     public void addBallotToCollection(Ballot votes)
     {
-//COMPLETE ME!!!
+        String []names; //candidate names
+        int i;             // index to ffind cluster
+
+        if (isEmpty()){
+            electorateName = votes.getElectorate();
+
+            names = votes.getVotes();
+            numCandidates = names.length;
+
+            for (i = 0; i < numCandidates; i++){
+                candidates[i] = new Cluster(names[i]);
+                
+            }
+        }
+        numBallots++; // create new ballot paper
+
+        // find the cluster matching the ballot's current preference
+        i = 0;
+         while ((i < numCandidates) && (!candidates[i].getBundleName().equalsIgnoreCase(votes.getSelection()))){
+            i++;
+         }
+            if (i < numCandidates){
+                candidates[i].addBallotToCluster(votes);
+            }
     }
 
     /**

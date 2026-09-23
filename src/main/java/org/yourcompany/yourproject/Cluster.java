@@ -13,7 +13,7 @@ package org.yourcompany.yourproject;
 public class Cluster implements ClusterInterface {
     // instance variables, (fixed for arrray.)
 
-	final protected int INITIAL_CAPACITY = 16;  // starting size of the ballots array
+		final protected int INITIAL_CAPACITY = 16;  // starting size of the ballots array
 
     protected String bundleName;        // candidate for whom this cluster of votes is for
 
@@ -258,15 +258,16 @@ public class Cluster implements ClusterInterface {
 		final double FULL = -1; //keep ballots existinbg weight
 
 		Ballot result;
+
 		result = null;
 
 		if (! isEmpty()){
 			result = ballots[0];
 
 			for (int i = 0; i < numBallots - 1; i++){
-				ballots[i] = ballots [i - 1];
+				ballots[i] = ballots [i + 1];
 			}
-			ballots[numBallots + 1] = null;
+			ballots[numBallots - 1] = null;
 			numBallots--;
 
 			rawCount--;
@@ -291,9 +292,18 @@ public class Cluster implements ClusterInterface {
      * Precondition: None Postcondition: A printable (String) form of the ballot
      * data is returned. If there are no ballot papers then "" is returned.
      * Informally: Convert the Cluster of ballot data to a multi-line String.
-     */
+     */ 
     public String toString() {
-//COMPLETE ME!!!
-        return "UNFINISHED";  // change me -- this is just to allow the program to compile
+		String r; //results
+
+		r = " ";
+		if (isEmpty()){
+			r += "Bundle:" + bundleName + "/n";
+
+			for (int i = 0; i < numBallots; i++){
+				r += ballots[i].toString() + "/n";
+			}
+		}
+		return r;
     }
 }
