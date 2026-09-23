@@ -163,7 +163,7 @@ public class Cluster implements ClusterInterface {
      * papers ordered by descending preference. Informally: Add a ballot paper
      * to the Cluster.
      */
-    public void addBallotToCluster(Ballot votes) { //FINISHED
+    public void addBallotToCluster(Ballot votes) { //Remember to make this a sorted insert method
 
         Node n;     // anew node to hold the ballot being added
 
@@ -202,9 +202,23 @@ public class Cluster implements ClusterInterface {
      * returned if the cluster is non-empty; null is returned otherwise.
      * Informally: Get the first ballot paper in the cluster.
      */
-    public int votesFor(String candidate, int preference) {
-//COMPLETE ME!!!
-        return -1;  // change me -- this is just to allow the program to compile
+    public int votesFor(String candidate, int preference) { //finished
+
+        int count;
+		Node current;
+		Ballot ballot;
+
+		count = 0;
+		current = first;
+		while (current != null){
+			ballot = (Ballot) current.getData();
+			if ((preference < ballot.getMaxVote()) && ballot.getVotes()[preference].equalsIgnoreCase(candidate)){
+				count++;
+			}
+			current.getNext();
+		}
+
+		return count;
     }
 
     /**
@@ -216,7 +230,7 @@ public class Cluster implements ClusterInterface {
      * @return Ballot -- the ballot removed from the current cluster which is to
      * be moved to another cluster with the given weight
      *
-     * Precondition: None Postcondition: the first ballot in the cluster is
+     * Precondition: None. Postcondition: the first ballot in the cluster is
      * removed, the selection is updated to the next preference, the weight is
      * altered if the residual is not full weight, and then the ballot is
      * returned. null is returned if the cluster is empty. Informally: Prepare
