@@ -1,6 +1,7 @@
 package org.yourcompany.yourproject;
 
 //nvm it started working again after adding packages
+
 /**
  * Cluster.java
  *
@@ -186,7 +187,7 @@ public class Cluster implements ClusterInterface {
      * papers ordered by descending preference. Informally: Add a ballot paper
      * to the Cluster.
      */
-    public void addBallotToCluster(Ballot votes) {
+    public void addBallotToCluster(Ballot votes) { //fixed
 
         int i; //index variable, local.
 
@@ -220,7 +221,7 @@ public class Cluster implements ClusterInterface {
      * returned if the cluster is non-empty; null is returned otherwise.
      * Informally: Get the first ballot paper in the cluster.
      */
-    public int votesFor(String candidate, int preference) { //finished
+    public int votesFor(String candidate, int preference) { //fixed
 
         int count;
 
@@ -253,9 +254,33 @@ public class Cluster implements ClusterInterface {
      * the first ballot of the cluster to be moved to the cluster of its next
      * preference, and remove it from this cluster.
      */
-    public Ballot transfer(double residual) {
-//COMPLETE ME!!!
-        return null;  // change me -- this is just to allow the program to compile
+    public Ballot transfer(double residual) { //finished
+		final double FULL = -1; //keep ballots existinbg weight
+
+		Ballot result;
+		result = null;
+
+		if (! isEmpty()){
+			result = ballots[0];
+
+			for (int i = 0; i < numBallots - 1; i++){
+				ballots[i] = ballots [i - 1];
+			}
+			ballots[numBallots + 1] = null;
+			numBallots--;
+
+			rawCount--;
+			weightedCount -= result.getWeight();
+
+			result.update();
+
+
+			if (residual != FULL){
+				result.setWeight(residual);
+			}
+
+		}
+		return result;
     }
 
     /**
