@@ -178,7 +178,7 @@ public class Collection implements CollectionInterface
      *                  is empty.
 	 * Informally: Print the horizontal histogram of ballots per candidate
 	 */
-    public void showDistribution() //this one sucke to make (having to figure out what goes where in the print statements)
+    public void showDistribution() //this one sucked to make (having to figure out what goes where in the print statements)
     {
         final int SCALE = 150;
 
@@ -225,7 +225,7 @@ public class Collection implements CollectionInterface
 	 */
     public void showCandidateVotes(String candidate)
     {
-        //this next
+        //COMPLETE ME!                                                                                            here
     }
 
     /**
@@ -384,7 +384,7 @@ public class Collection implements CollectionInterface
 	 */
     protected void transfer(int index, double residual)
     {
-//COMPLETE ME!!!
+//COMPLETE ME!!!                                                                                                                     here
     }
 
     /**
@@ -470,7 +470,7 @@ public class Collection implements CollectionInterface
 	 */
     public String distributePreferences()
     {
-//COMPLETE ME!!!
+//COMPLETE ME!!!                                                                                                            here
         return "UNFINISHED";  // change me -- this is just to allow the program to compile
     }
 
