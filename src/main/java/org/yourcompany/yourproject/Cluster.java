@@ -1,3 +1,5 @@
+package org.yourcompany.yourproject;
+
 //for reference, im using eclipse to write the code as im farmiliar, but then pasting it in here to add to repo. vscode doesnt like me very muich and wont work a lot of the time.
 /**
  * Cluster.java
@@ -50,6 +52,9 @@ public class Cluster implements ClusterInterface {
         first = null;
         last = null;
 
+    }
+
+    public Cluster() {
     }
 
     /**

@@ -1,3 +1,5 @@
+package org.yourcompany.yourproject;
+
 /**
  * CollectionInterface.java
  * 

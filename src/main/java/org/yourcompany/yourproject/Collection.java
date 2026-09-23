@@ -1,3 +1,5 @@
+package org.yourcompany.yourproject;
+
 /**
  * Collection.java
  * 
@@ -12,7 +14,7 @@ public class Collection implements CollectionInterface
 {
     // final instance variables
     final protected int MAX_CANDIDATES = 10;    // the maximum number of candidates in the collection
-    final protected int NUMBER_TO_BE_ELECTED;   // the number of positions to be filled
+    final protected int NUMBER_TO_BE_ELECTED = 0;   // the number of positions to be filled
 
     // would-be-final instance variables, if enforceable
     protected int quota;                // how many votes are required to become elected

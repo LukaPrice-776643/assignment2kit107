@@ -1,3 +1,5 @@
+package org.yourcompany.yourproject;
+
 /**
  * AssigTwo226.java
  * 
